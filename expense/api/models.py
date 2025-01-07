@@ -16,8 +16,8 @@ class Expense(models.Model):
     category = models.CharField(max_length=25, choices=CATEGORIES)
     description = models.CharField(max_length=100)
     amount = models.PositiveBigIntegerField()
-    creation_date = models.DateField()
-    update_date = models.DateField()
+    creation_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.title
