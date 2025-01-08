@@ -11,7 +11,7 @@ class Expense(models.Model):
         ('Others', 'Others')
     ]
 
-    payment_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=25)
     category = models.CharField(max_length=25, choices=CATEGORIES)
     description = models.CharField(max_length=100)
