@@ -5,7 +5,7 @@ from .serializer import ExpenseSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
-from django_filters import FilterSet, ChoiceFilter
+from django_filters import FilterSet, ChoiceFilter, DateFilter
 
 class ExpenseFilter(FilterSet):
     CHOICES = [
@@ -13,7 +13,10 @@ class ExpenseFilter(FilterSet):
     ('option2', 'Past Month'),
     ('option3', 'Past Three Months')
     ]
+    
     date_filter = ChoiceFilter(choices=CHOICES, method='filter_by_date', label='Date Filter')
+    start_date = DateFilter(field_name="creation_date", lookup_expr='gte', label='Start Date')
+    end_date = DateFilter(field_name="creation_date", lookup_expr='lte', label='End Date')
 
     class Meta:
         model = Expense
