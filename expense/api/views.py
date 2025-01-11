@@ -66,3 +66,7 @@ class UserLoginView(CreateAPIView):
                 'username': user.username,
                 'email': user.email, 
             })
+            
+        return Response({
+            'error': 'User not found',
+        })
