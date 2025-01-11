@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from .models import Expense
 from .serializer import ExpenseSerializer, UserRegistrationSerializer, UserLoginSerializer
 from django_filters.rest_framework import DjangoFilterBackend
@@ -7,8 +7,10 @@ from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
 from django_filters import FilterSet, ChoiceFilter, DateFilter
 from django.contrib.auth.models import User
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class ExpenseFilter(FilterSet):
     CHOICES = [
@@ -47,26 +49,42 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     filterset_class = ExpenseFilter
 
 
-class UserRegistrationView(CreateAPIView):
+class UserRegistrationView(GenericAPIView):
     model = User
+    permission_classes = (AllowAny,)
     serializer_class = UserRegistrationSerializer
 
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
 
-class UserLoginView(CreateAPIView):
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.save()
+            data = serializer.data
+            data['response'] = 'Registration successful!'
+            token = RefreshToken.for_user(user)
+            data['refresh'] = str(token)
+            data['access'] = str(token.access_token)
+        
+        return Response(data, status=status.HTTP_201_CREATED)
+
+
+class UserLoginView(GenericAPIView):
+    permission_classes = (AllowAny,)
     serializer_class = UserLoginSerializer
 
-    def post(self, request):
-        serializer = UserLoginSerializer(data=request.data)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
         
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             user = serializer.validated_data['user']
+            token = RefreshToken.for_user(user)
 
             return Response({
                 'id': user.id,
                 'username': user.username,
-                'email': user.email, 
+                'email': user.email,
+                'refresh': str(token),
+                'access': str(token.access_token)
             })
-            
-        return Response({
-            'error': 'User not found',
-        })
+
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)

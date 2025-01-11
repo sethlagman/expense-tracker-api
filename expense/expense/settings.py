@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from dotenv import load_dotenv
 from pathlib import Path
 import os
+import datetime
 
 # Load the .env file
 load_dotenv()
@@ -31,7 +32,6 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -140,3 +140,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=60),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME': datetime.timedelta(days=30),
+    'SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER': datetime.timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME_LATE_USER': datetime.timedelta(days=30),
+}
