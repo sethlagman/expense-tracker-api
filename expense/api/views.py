@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import Expense
-from .serializer import ExpenseSerializer
+from .serializer import ExpenseSerializer, UserRegistrationSerializer, UserLoginSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
 from django_filters import FilterSet, ChoiceFilter, DateFilter
+from django.contrib.auth.models import User
+from rest_framework.generics import CreateAPIView
+from rest_framework.response import Response
 
 class ExpenseFilter(FilterSet):
     CHOICES = [
@@ -42,3 +45,24 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     serializer_class = ExpenseSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = ExpenseFilter
+
+
+class UserRegistrationView(CreateAPIView):
+    model = User
+    serializer_class = UserRegistrationSerializer
+
+
+class UserLoginView(CreateAPIView):
+    serializer_class = UserLoginSerializer
+
+    def post(self, request):
+        serializer = UserLoginSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+
+            return Response({
+                'id': user.id,
+                'username': user.username,
+                'email': user.email, 
+            })
