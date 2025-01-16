@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Expense(models.Model):
     CATEGORIES = [
@@ -18,6 +19,7 @@ class Expense(models.Model):
     amount = models.PositiveBigIntegerField()
     creation_date = models.DateField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title

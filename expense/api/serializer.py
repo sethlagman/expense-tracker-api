@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
 class ExpenseSerializer(serializers.ModelSerializer):
+    created_by = serializers.HiddenField(
+    default=serializers.CurrentUserDefault()
+    )
+    
     class Meta:
         model = Expense
         fields = '__all__'

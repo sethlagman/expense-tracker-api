@@ -47,6 +47,13 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     serializer_class = ExpenseSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = ExpenseFilter
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        queryset = super(ExpenseViewSet, self).get_queryset()
+        user = self.request.user
+        queryset = Expense.objects.filter(created_by=user)
+        return queryset
 
 
 class UserRegistrationView(GenericAPIView):
