@@ -14,9 +14,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 class ExpenseFilter(FilterSet):
     CHOICES = [
-    ('option1', 'Past Week'),
-    ('option2', 'Past Month'),
-    ('option3', 'Past Three Months')
+    ('past_week', 'Past Week'),
+    ('past_month', 'Past Month'),
+    ('past_three_month', 'Past Three Months')
     ]
     
     date_filter = ChoiceFilter(choices=CHOICES, method='filter_by_date', label='Date Filter')
@@ -28,15 +28,15 @@ class ExpenseFilter(FilterSet):
         fields = ['id', 'title', 'category', 'amount']
 
     def filter_by_date(self, queryset, name, value):
-        pastweek_date =  str(date.today() - timedelta(days=7))
-        pastwmonth_date =  str(date.today() - relativedelta(months=1))
+        past_week_date =  str(date.today() - timedelta(days=7))
+        past_wmonth_date =  str(date.today() - relativedelta(months=1))
         past_three_month_date =  str(date.today() - relativedelta(months=3))
         
-        if value == 'option1':
-            return queryset.filter(creation_date__gte=pastweek_date)
-        if value == 'option2':
-            return queryset.filter(creation_date__gte=pastwmonth_date)
-        if value == 'option3':
+        if value == 'past_week':
+            return queryset.filter(creation_date__gte=past_week_date)
+        if value == 'past_month':
+            return queryset.filter(creation_date__gte=past_wmonth_date)
+        if value == 'past_three_month':
             return queryset.filter(creation_date__gte=past_three_month_date)
         
         return queryset
