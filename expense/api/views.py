@@ -7,7 +7,7 @@ from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
 from django_filters import FilterSet, ChoiceFilter, DateFilter
 from django.contrib.auth.models import User
-from rest_framework.generics import CreateAPIView, GenericAPIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
