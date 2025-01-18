@@ -15,6 +15,9 @@ class CustomDefaultRouter(routers.DefaultRouter):
             additional_links = {
                 'register': 'http://127.0.0.1:8000/register/',
                 'login': 'http://127.0.0.1:8000/login/',
+                'docs': 'http://127.0.0.1:8000/docs/',
+                'schema': 'http://127.0.0.1:8000/schema/',
+                'refresh': 'http://127.0.0.1:8000/refresh/',
             }
             response.data.update(additional_links)
             return response
@@ -31,5 +34,5 @@ urlpatterns = [
     path('login/', UserLoginView.as_view(), name='login'),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 ]

@@ -43,6 +43,10 @@ class ExpenseFilter(FilterSet):
 
 
 class ExpenseViewSet(viewsets.ModelViewSet):
+    """
+    For managing and viewing expenses
+    """
+
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     filter_backends = [DjangoFilterBackend]
@@ -57,6 +61,10 @@ class ExpenseViewSet(viewsets.ModelViewSet):
 
 
 class UserRegistrationView(GenericAPIView):
+    """
+    User registration
+    """
+    
     model = User
     permission_classes = (AllowAny,)
     serializer_class = UserRegistrationSerializer
@@ -76,6 +84,10 @@ class UserRegistrationView(GenericAPIView):
 
 
 class UserLoginView(GenericAPIView):
+    """
+    User login
+    """
+    
     permission_classes = (AllowAny,)
     serializer_class = UserLoginSerializer
 

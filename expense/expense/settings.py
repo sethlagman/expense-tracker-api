@@ -162,4 +162,8 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'An API for tracking all your expenses',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'EXTERNAL_DOCS': {
+        'description': 'Find more about Expense Tracker API',
+        'url': 'github.com/sethlagman/expense-tracker-api',
+    },
 }
