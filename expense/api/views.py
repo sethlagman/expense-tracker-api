@@ -11,6 +11,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
+from drf_spectacular.utils import extend_schema
 
 class ExpenseFilter(FilterSet):
     CHOICES = [
@@ -43,10 +44,6 @@ class ExpenseFilter(FilterSet):
 
 
 class ExpenseViewSet(viewsets.ModelViewSet):
-    """
-    For managing and viewing expenses
-    """
-
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     filter_backends = [DjangoFilterBackend]
@@ -58,17 +55,59 @@ class ExpenseViewSet(viewsets.ModelViewSet):
         user = self.request.user
         queryset = Expense.objects.filter(created_by=user)
         return queryset
+    
+    @extend_schema(
+            description="Get method for expense list",
+            summary="Retrieves a list of expenses"
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(
+            description="Post method for creating expense",
+            summary="Creates new expense"
+    )
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    @extend_schema(
+            description="Get method for expense id",
+            summary="Retrieve a specific task by its ID"
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(
+            description="Put method for updating expense",
+            summary="Update an existing task",
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+    
+    @extend_schema(
+            description="Delete method for deleting expense",
+            summary="Deletes an existing task"
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+    
+    @extend_schema(
+            description="Patch method for partially updating expense",
+            summary="Partially updates an existing task"
+    )
+    def partial_update(self, request, *args, **kwargs):
+        return super().patch(request, *args, **kwargs)
 
 
 class UserRegistrationView(GenericAPIView):
-    """
-    User registration
-    """
-    
     model = User
     permission_classes = (AllowAny,)
     serializer_class = UserRegistrationSerializer
 
+    @extend_schema(
+            description="Post method for registering user",
+            summary="Creates a user"
+    )
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 
@@ -84,13 +123,13 @@ class UserRegistrationView(GenericAPIView):
 
 
 class UserLoginView(GenericAPIView):
-    """
-    User login
-    """
-    
     permission_classes = (AllowAny,)
     serializer_class = UserLoginSerializer
 
+    @extend_schema(
+            description="Post method for logging in user",
+            summary="Logs in a user"
+    )
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         

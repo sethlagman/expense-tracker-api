@@ -164,6 +164,6 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     'EXTERNAL_DOCS': {
         'description': 'Find more about Expense Tracker API',
-        'url': 'github.com/sethlagman/expense-tracker-api',
+        'url': 'https://github.com/sethlagman/expense-tracker-api',
     },
 }
