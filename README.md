@@ -74,7 +74,9 @@ An API for tracking all your expenses
 - [X]  Exit the PostgreSQL shell
     - `\q`
 - [X]  Update your `.env` file with the database credentials
+    - Input your keys
     ```
+    SECRET_KEY=<django key>
     DB_USER=<db username>
     DB_PASSWORD=<db password>
     DB_NAME=<db name>
