@@ -49,7 +49,7 @@ An API for tracking all your expenses
 - [X]  Run the django app
     - `python manage.py runserver`
 - [X]  Navigate to
-    - http://127.0.0.1:8000/
+    - http://127.0.0.1:8000/ or http://127.0.0.1:8000/docs/
 - [X]  To deactivate virtual environment
     - `deactivate`
 
